@@ -76,7 +76,7 @@ def reversion_checking(df_barcodes):
 
 
 def test_no_flip_pairs():
-    df_barcodes = pd.read_csv('barcodes.csv',
+    df_barcodes = pd.read_csv('barcode.csv',
                               index_col=0)
     flipPairs = [(d, d[-1] + d[1:len(d)-1]+d[0])
                  for d in df_barcodes.columns
@@ -145,5 +145,5 @@ df = parse_tree_paths(df)
 df_barcodes = convert_to_barcodes(df)
 df_barcodes = reversion_checking(df_barcodes)
 df_barcodes = check_mutation_chain(df_barcodes)
-df_barcodes.to_csv('barcodes.csv')
+df_barcodes.to_csv('barcode.csv')
 test_no_flip_pairs()

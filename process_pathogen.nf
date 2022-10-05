@@ -239,7 +239,8 @@ process generate_barcodes {
     input:
         path clade_assignments_file
     output:
-        path 'barcodes.csv', emit: barcodes_file
+        path 'barcode.csv'
+        path 'barcode.html'
     script:
         """
         convert_barcodes.py $clade_assignments_file
@@ -247,7 +248,7 @@ process generate_barcodes {
         """
     stub:
         """
-        touch barcodes.csv
+        touch barcode.csv
         echo "Stubbed barcode generation of $clade_assignments_file"
         """
 }

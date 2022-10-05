@@ -4,7 +4,7 @@ import altair as alt
 import pandas as pd
 import numpy as np
 
-barcode = pd.read_csv("barcodes.csv", header=0, index_col=0)
+barcode = pd.read_csv("barcode.csv", header=0, index_col=0)
 
 # convert barcode dataframe to long format
 barcode = barcode.stack().reset_index()
