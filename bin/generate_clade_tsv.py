@@ -17,5 +17,4 @@ args = parser.parse_args()
 df = pd.read_csv(args.input ,sep='\t')
 # reverse the order of the columns
 df = df.loc[:,[args.lineage, args.strain]]
-df.rename(columns={args.lineage: 'CLUSTER', args.strain: 'TAXA'}, inplace=True)
-df.to_csv(args.output,index=False,header=True,sep='\t')
+df.to_csv(args.output,index=False,header=False,sep='\t')
