@@ -5,7 +5,7 @@ process pre_process {
     input:
         path fasta_file
         path metadata_file
-        path tree_file
+        file tree_file
     output:
         path "preprocessed_${fasta_file}", emit: preprocessed_fasta
         path "preprocessed_${metadata_file}", emit: preprocessed_metadata
