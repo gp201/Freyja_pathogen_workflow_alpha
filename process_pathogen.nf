@@ -11,7 +11,7 @@ process pre_process {
         path "preprocessed_${metadata_file}", emit: preprocessed_metadata
         path "preprocessed_${tree_file}", emit: preprocessed_tree, optional: true
     script:
-    if (tree_file.exists())
+    if (tree_file.isEmpty())
         """
         bash $params.work_dir/pre_process.sh $fasta_file $metadata_file
         """
@@ -48,7 +48,7 @@ process align {
         path "aligned.fasta", emit: aligned_fasta_file
     script:
     if (params.align_mode == 'mafft')
-        if (ref_seq.exists())
+        if (ref_seq.isEmpty())
             """
             mafft --auto --thread $params.threads $fasta > aligned.fasta
             """
@@ -302,7 +302,7 @@ workflow {
     println "Input parameters:"
     println "\tFasta file:\t${params.fasta_file}"
     println "\tWork directory:\t${params.work_dir}"
-    println "tree_file.isEmpty(): ${params.tree_file.exists()}"
+    println "tree_file.isEmpty(): ${params.tree_file.isEmpty()}"
     if (!params.skip_clade_annotations) {
         // Note: fasta and metadata files are required.
         pre_process(params.fasta_file, params.metadata_file. params.tree_file)
