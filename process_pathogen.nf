@@ -283,6 +283,7 @@ process generate_barcodes {
     stub:
         """
         touch barcode.csv
+        touch barcode.html
         echo "Stubbed barcode generation of $clade_assignments_file"
         """
 }
