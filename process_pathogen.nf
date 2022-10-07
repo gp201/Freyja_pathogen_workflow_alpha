@@ -13,11 +13,11 @@ process pre_process {
     script:
     if ($tree_file.isEmpty())
         """
-        bash ${params.work_dir}/pre_process.sh $fasta_file $metadata_file
+        bash $params.work_dir/pre_process.sh $fasta_file $metadata_file
         """
     else
         """
-        bash ${params.work_dir}/pre_process.sh $fasta_file $metadata_file $tree_file
+        bash $params.work_dir/pre_process.sh $fasta_file $metadata_file $tree_file
         """
     stub:
         """
