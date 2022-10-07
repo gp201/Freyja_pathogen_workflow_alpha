@@ -87,12 +87,13 @@ process clock_filter {
     input:
         path aligned_fasta
         path tree
+        path metadata_file
     output:
         path "clock_results/timetree.nexus", emit: filtered_tree_file
         path 'clock_results/*'
     script:
         """
-        treetime --aln $aligned_fasta --tree $tree --dates $params.metadata_file --name-column $params.strain_column --date-column $params.date_column --clock-filter $params.clock_filter --outdir clock_results
+        treetime --aln $aligned_fasta --tree $tree --dates $metadata_file --name-column $params.strain_column --date-column $params.date_column --clock-filter $params.clock_filter --outdir clock_results
         """
         // treetime --tree $tree --dates $params.metadata_file --aln $aligned_fasta --outdir timetree
         // Note: This outputs the tree in NEXUS format, which is not supported by the next process.
@@ -305,10 +306,10 @@ workflow {
         // Note: fasta and metadata files are required.
         pre_process(params.fasta_file, params.metadata_file. params.tree_file)
         // Ignore the params.tree_file input. Find a more elegant way to do this.
-        basic_checks(pre_process.out.fasta_file, pre_process.out.metadata_file, params.tree_file)
-        align(params.fasta_file, params.reference)
+        basic_checks(pre_process.out.preprocessed_fasta, pre_process.out.preprocessed_metadata ,params.out.preprocessed_tree)
+        align(pre_process.out.preprocessed_fasta, params.reference)
         build_ml_tree(align.out.aligned_fasta_file)
-        clock_filter(align.out.aligned_fasta_file, build_ml_tree.out.tree_file)
+        clock_filter(align.out.aligned_fasta_file, build_ml_tree.out.tree_file, pre_process.out.preprocessed_metadata)
         generate_vcf(align.out.aligned_fasta_file)
         entropy(align.out.aligned_fasta_file)
         convert_nexus_to_newick(clock_filter.out.filtered_tree_file)
@@ -325,14 +326,14 @@ workflow {
         println "\tTree file:\t${params.tree_file}"
         println "\tMetadata file:\t${params.metadata_file}"
         pre_process(params.fasta_file, params.metadata_file, params.tree_file)
-        basic_checks(pre_process.out.fasta_file, pre_process.out.metadata_file, pre_process.out.tree_file)
-        if (params.fasta_file.getName().contains("aligned")) {
+        basic_checks(pre_process.out.preprocessed_fasta, pre_process.out.preprocessed_metadata, pre_process.out.preprocessed_tree)
+        if (pre_process.out.preprocessed_fasta.getName().contains("aligned")) {
             println "__Fasta file is already aligned.__"
-            generate_vcf(params.fasta_file)
+            generate_vcf(pre_process.out.preprocessed_fasta)
         }
         else {
             println "__Aligning fasta file.__"
-            align(params.fasta_file, params.reference)
+            align(pre_process.out.preprocessed_fasta, params.reference)
             generate_vcf(align.out.aligned_fasta_file)
         }
         generate_protobuf_tree(generate_vcf.out.vcf_file, params.tree_file)
