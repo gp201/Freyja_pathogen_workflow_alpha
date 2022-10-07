@@ -13,11 +13,11 @@ process pre_process {
     script:
     if (params.tree_file.isEmpty())
         """
-        bash $params.work_dir/pre_process.sh $fasta_file $metadata_file
+        bash ${params.work_dir}/pre_process.sh $fasta_file $metadata_file
         """
     else
         """
-        bash $params.work_dir/pre_process.sh $fasta_file $metadata_file $tree_file
+        bash ${params.work_dir}/pre_process.sh $fasta_file $metadata_file $tree_file
         """
     stub:
     if (tree_file.isEmpty())
@@ -25,7 +25,7 @@ process pre_process {
         touch preprocessed_$fasta_file
         touch preprocessed_$metadata_file
         touch preprocessed_$tree_file
-        echo "$params.work_dir/pre_process.sh $fasta_file $metadata_file $tree_file"
+        echo "${params.work_dir}/pre_process.sh $fasta_file $metadata_file $tree_file"
         """
 }
 
