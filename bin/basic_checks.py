@@ -37,6 +37,7 @@ def check_metadata_fasta_headers(metadata, fasta_file):
 def main():
     fasta_file = sys.argv[1]
     metadata_file = sys.argv[2]
+    tree_file = sys.argv[3]
     if metadata_file.endswith(".tsv"):
         metadata = pd.read_csv(metadata_file, header=0, sep='\t')
     elif metadata_file.endswith(".csv"):

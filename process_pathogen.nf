@@ -1,12 +1,41 @@
 #!/usr/bin/env nextflow
 
+
+process pre_process {
+    input:
+        path fasta_file
+        path metadata_file
+        path tree_file
+    output:
+        path "preprocessed_${fasta_file}", emit: preprocessed_fasta
+        path "preprocessed_${metadata_file}", emit: preprocessed_metadata
+        path "preprocessed_${tree_file}", emit: preprocessed_tree, optional: true
+    script:
+    if ($tree_file.isEmpty())
+        """
+        bash ${params.work_dir}/pre_process.sh $fasta_file $metadata_file
+        """
+    else
+        """
+        bash ${params.work_dir}/pre_process.sh $fasta_file $metadata_file $tree_file
+        """
+    stub:
+        """
+        touch $fasta_file
+        touch $metadata_file
+        touch $tree_file
+        echo "pre_process.sh $fasta_file $metadata_file $tree_file"
+        """
+}
+
 process basic_checks {
     input:
         path fasta_file
         path metadata_file
+        path tree_file
     script:
         """
-        basic_checks.py $fasta_file $metadata_file
+        basic_checks.py $fasta_file $metadata_file $tree_file
         """
 }
 
@@ -19,7 +48,7 @@ process align {
         path "aligned.fasta", emit: aligned_fasta_file
     script:
     if (params.align_mode == 'mafft')
-        if (params.align_to_reference == false)
+        if ($ref_seq.isEmpty())
             """
             mafft --auto --thread $params.threads $fasta > aligned.fasta
             """
@@ -273,7 +302,10 @@ workflow {
     println "\tFasta file:\t${params.fasta_file}"
     println "\tOutput directory:\t${params.output_dir}"
     if (!params.skip_clade_annotations) {
-        basic_checks(params.fasta_file, params.metadata_file)
+        // Note: fasta and metadata files are required.
+        pre_process(params.fasta_file, params.metadata_file)
+        // Ignore the params.tree_file input. Find a more elegant way to do this.
+        basic_checks(pre_process.out.fasta_file, pre_process.out.metadata_file, params.tree_file)
         align(params.fasta_file, params.reference)
         build_ml_tree(align.out.aligned_fasta_file)
         clock_filter(align.out.aligned_fasta_file, build_ml_tree.out.tree_file)
@@ -292,10 +324,17 @@ workflow {
         println "__Skipping clade annotations.__"
         println "\tTree file:\t${params.tree_file}"
         println "\tMetadata file:\t${params.metadata_file}"
-        // TODO-GP: Add the code to run the pipeline with clade annotations already present in tree.
-        basic_checks(params.fasta_file, params.metadata_file)
-        align(params.fasta_file, params.reference)
-        generate_vcf(align.out.aligned_fasta_file)
+        pre_process(params.fasta_file, params.metadata_file, params.tree_file)
+        basic_checks(pre_process.out.fasta_file, pre_process.out.metadata_file, pre_process.out.tree_file)
+        if (params.fasta_file.getName().contains("aligned")) {
+            println "__Fasta file is already aligned.__"
+            generate_vcf(params.fasta_file)
+        }
+        else {
+            println "__Aligning fasta file.__"
+            align(params.fasta_file, params.reference)
+            generate_vcf(align.out.aligned_fasta_file)
+        }
         generate_protobuf_tree(generate_vcf.out.vcf_file, params.tree_file)
         generate_clade_tsv(params.metadata_file)
         annotate_tree(generate_protobuf_tree.out.protobuf_tree_file, generate_clade_tsv.out.clade_tsv_file)
