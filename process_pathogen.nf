@@ -11,7 +11,7 @@ process pre_process {
         path "preprocessed_${metadata_file}", emit: preprocessed_metadata
         path "preprocessed_${tree_file}", emit: preprocessed_tree, optional: true
     script:
-    if (params.tree_file.isEmpty())
+    if (params.tree_file.getName() == "/NA.tree")
         """
         bash ${params.work_dir}pre_process.sh $fasta_file $metadata_file
         """
@@ -308,7 +308,7 @@ workflow {
     println "Input parameters:"
     println "\tFasta file:\t${params.fasta_file}"
     println "\tWork directory:\t${params.work_dir}"
-    println "tree_file.isEmpty(): ${params.tree_file.isEmpty()}"
+    println "tree_file.isEmpty(): ${params.tree_file.getName()}"
     if (!params.skip_clade_annotations) {
         // Note: fasta and metadata files are required.
         pre_process(params.fasta_file, params.metadata_file. params.tree_file)
