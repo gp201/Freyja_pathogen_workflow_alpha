@@ -21,9 +21,9 @@ process pre_process {
         """
     stub:
         """
-        touch $fasta_file
-        touch $metadata_file
-        touch $tree_file
+        touch preprocessed_$fasta_file
+        touch preprocessed_$metadata_file
+        touch preprocessed_$tree_file
         echo "$params.work_dir/pre_process.sh $fasta_file $metadata_file $tree_file"
         """
 }
