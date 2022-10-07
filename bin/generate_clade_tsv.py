@@ -14,7 +14,10 @@ parser.add_argument("-l", "--lineage", help="Lineage column name", default='line
 parser.add_argument("-o", "--output", help="Output file", required=True)
 args = parser.parse_args()
 
-df = pd.read_csv(args.input ,sep='\t')
+if args.input.endswith(".tsv"):
+    df = pd.read_csv(args.input, header=0, sep='\t')
+elif args.input.endswith(".csv"):
+    df = pd.read_csv(args.input, header=0)
 # reverse the order of the columns
 df = df.loc[:,[args.lineage, args.strain]]
 df.to_csv(args.output,index=False,header=False,sep='\t')
