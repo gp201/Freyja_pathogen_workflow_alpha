@@ -37,6 +37,10 @@ process basic_checks {
         """
         basic_checks.py $fasta_file $metadata_file $tree_file
         """
+    stub:
+        """
+        echo "basic_checks.py $fasta_file $metadata_file $tree_file"
+        """
 }
 
 process align {
