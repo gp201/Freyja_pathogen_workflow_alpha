@@ -301,7 +301,7 @@ workflow {
     // Print the input parameters
     println "Input parameters:"
     println "\tFasta file:\t${params.fasta_file}"
-    println "\tOutput directory:\t${params.output_dir}"
+    println "\tWork directory:\t$params.work_dir"
     if (!params.skip_clade_annotations) {
         // Note: fasta and metadata files are required.
         pre_process(params.fasta_file, params.metadata_file. params.tree_file)
@@ -346,5 +346,5 @@ workflow {
 
 workflow.onComplete {
     println "Workflow complete!"
-    println "Output files are stored in $params.output_dir"
+    println "Output files are stored in $params.work_dir/output"
 }
