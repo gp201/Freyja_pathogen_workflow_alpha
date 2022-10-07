@@ -11,7 +11,7 @@ process pre_process {
         path "preprocessed_${metadata_file}", emit: preprocessed_metadata
         path "preprocessed_${tree_file}", emit: preprocessed_tree, optional: true
     script:
-    if (tree_file.isEmpty())
+    if (params.tree_file.isEmpty())
         """
         bash $params.work_dir/pre_process.sh $fasta_file $metadata_file
         """
