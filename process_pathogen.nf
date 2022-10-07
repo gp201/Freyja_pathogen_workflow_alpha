@@ -24,7 +24,7 @@ process pre_process {
         touch $fasta_file
         touch $metadata_file
         touch $tree_file
-        echo "pre_process.sh $fasta_file $metadata_file $tree_file"
+        echo "$params.work_dir/pre_process.sh $fasta_file $metadata_file $tree_file"
         """
 }
 
@@ -302,7 +302,7 @@ workflow {
     println "Input parameters:"
     println "\tFasta file:\t${params.fasta_file}"
     println "\tWork directory:\t${params.work_dir}"
-    // if (!params.skip_clade_annotations) {
+    if (!params.skip_clade_annotations) {
         // Note: fasta and metadata files are required.
         pre_process(params.fasta_file, params.metadata_file. params.tree_file)
         // Ignore the params.tree_file input. Find a more elegant way to do this.
@@ -319,29 +319,29 @@ workflow {
         annotate_tree(generate_protobuf_tree.out.protobuf_tree_file, clean_clades_file.out.cleaned_clades_file)
         extract_clades(annotate_tree.out.annotated_tree_file)
         generate_barcodes(extract_clades.out.clade_assignments_file)
-    // }
-    // else {
-    //     // Note: tree, fasta and metadata files are required.
-    //     println "__Skipping clade annotations.__"
-    //     println "\tTree file:\t${params.tree_file}"
-    //     println "\tMetadata file:\t${params.metadata_file}"
-    //     pre_process(params.fasta_file, params.metadata_file, params.tree_file)
-    //     basic_checks(pre_process.out.preprocessed_fasta, pre_process.out.preprocessed_metadata, pre_process.out.preprocessed_tree)
-    //     if (pre_process.out.preprocessed_fasta.getName().contains("aligned")) {
-    //         println "__Fasta file is already aligned.__"
-    //         generate_vcf(pre_process.out.preprocessed_fasta)
-    //     }
-    //     else {
-    //         println "__Aligning fasta file.__"
-    //         align(pre_process.out.preprocessed_fasta, params.reference)
-    //         generate_vcf(align.out.aligned_fasta_file)
-    //     }
-    //     generate_protobuf_tree(generate_vcf.out.vcf_file, params.tree_file)
-    //     generate_clade_tsv(params.metadata_file)
-    //     annotate_tree(generate_protobuf_tree.out.protobuf_tree_file, generate_clade_tsv.out.clade_tsv_file)
-    //     extract_clades(annotate_tree.out.annotated_tree_file)
-    //     generate_barcodes(extract_clades.out.clade_assignments_file)
-    // }
+    }
+    else {
+        // Note: tree, fasta and metadata files are required.
+        println "__Skipping clade annotations.__"
+        println "\tTree file:\t${params.tree_file}"
+        println "\tMetadata file:\t${params.metadata_file}"
+        pre_process(params.fasta_file, params.metadata_file, params.tree_file)
+        basic_checks(pre_process.out.preprocessed_fasta, pre_process.out.preprocessed_metadata, pre_process.out.preprocessed_tree)
+        if (pre_process.out.preprocessed_fasta.getName().contains("aligned")) {
+            println "__Fasta file is already aligned.__"
+            generate_vcf(pre_process.out.preprocessed_fasta)
+        }
+        else {
+            println "__Aligning fasta file.__"
+            align(pre_process.out.preprocessed_fasta, params.reference)
+            generate_vcf(align.out.aligned_fasta_file)
+        }
+        generate_protobuf_tree(generate_vcf.out.vcf_file, params.tree_file)
+        generate_clade_tsv(params.metadata_file)
+        annotate_tree(generate_protobuf_tree.out.protobuf_tree_file, generate_clade_tsv.out.clade_tsv_file)
+        extract_clades(annotate_tree.out.annotated_tree_file)
+        generate_barcodes(extract_clades.out.clade_assignments_file)
+    }
 }
 
 workflow.onComplete {
