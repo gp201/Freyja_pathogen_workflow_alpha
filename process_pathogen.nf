@@ -11,7 +11,7 @@ process pre_process {
         path "preprocessed_${metadata_file}", emit: preprocessed_metadata
         path "preprocessed_${tree_file}", emit: preprocessed_tree, optional: true
     script:
-    if (tree_file.isEmpty())
+    if (tree_file.exists())
         """
         bash $params.work_dir/pre_process.sh $fasta_file $metadata_file
         """
@@ -48,7 +48,7 @@ process align {
         path "aligned.fasta", emit: aligned_fasta_file
     script:
     if (params.align_mode == 'mafft')
-        if (ref_seq.isEmpty())
+        if (ref_seq.exists())
             """
             mafft --auto --thread $params.threads $fasta > aligned.fasta
             """
