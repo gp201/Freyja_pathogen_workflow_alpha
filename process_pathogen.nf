@@ -303,7 +303,7 @@ workflow {
     println "\tOutput directory:\t${params.output_dir}"
     if (!params.skip_clade_annotations) {
         // Note: fasta and metadata files are required.
-        pre_process(params.fasta_file, params.metadata_file)
+        pre_process(params.fasta_file, params.metadata_file. params.tree_file)
         // Ignore the params.tree_file input. Find a more elegant way to do this.
         basic_checks(pre_process.out.fasta_file, pre_process.out.metadata_file, params.tree_file)
         align(params.fasta_file, params.reference)
