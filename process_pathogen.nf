@@ -301,7 +301,7 @@ workflow {
     // Print the input parameters
     println "Input parameters:"
     println "\tFasta file:\t${params.fasta_file}"
-    println "\tWork directory:\t$params.work_dir"
+    println "\tWork directory:\t${params.work_dir}"
     if (!params.skip_clade_annotations) {
         // Note: fasta and metadata files are required.
         pre_process(params.fasta_file, params.metadata_file. params.tree_file)
