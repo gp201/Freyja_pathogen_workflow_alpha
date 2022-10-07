@@ -20,6 +20,7 @@ process pre_process {
         bash $params.work_dir/pre_process.sh $fasta_file $metadata_file $tree_file
         """
     stub:
+    if (tree_file.isEmpty())
         """
         touch preprocessed_$fasta_file
         touch preprocessed_$metadata_file
