@@ -306,7 +306,6 @@ workflow {
     if (!params.skip_clade_annotations) {
         // Note: fasta and metadata files are required.
         pre_process(params.fasta_file, params.metadata_file. params.tree_file)
-        // Ignore the params.tree_file input. Find a more elegant way to do this.
         basic_checks(pre_process.out.preprocessed_fasta, pre_process.out.preprocessed_metadata, pre_process.out.preprocessed_tree)
         align(pre_process.out.preprocessed_fasta, params.reference)
         build_ml_tree(align.out.aligned_fasta_file)
