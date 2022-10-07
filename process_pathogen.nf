@@ -210,7 +210,7 @@ process generate_clade_tsv {
     stub:
         """
         touch clade_assignments.tsv
-        echo "Stubbed clade tsv generation of $clades_file"
+        echo "Stubbed clade tsv generation of $metadata_file"
         """
 }
 
