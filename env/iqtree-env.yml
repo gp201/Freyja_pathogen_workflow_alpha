@@ -1,0 +1,6 @@
+name: freyja-pathogen-iqtree
+channels:
+  - conda-forge
+  - bioconda
+dependencies:
+  - iqtree
