@@ -11,7 +11,6 @@ process basic_checks {
 }
 
 process align {
-    label 'minimap2'
     input:
         path fasta
         path ref_seq

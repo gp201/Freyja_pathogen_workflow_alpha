@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-import os
-from Bio import SeqIO,AlignIO
+from Bio import AlignIO
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib
