@@ -1,0 +1,6 @@
+name: freyja-pathogen-usher
+channels:
+  - conda-forge
+  - bioconda
+dependencies:
+  - usher

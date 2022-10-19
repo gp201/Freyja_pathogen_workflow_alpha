@@ -3,7 +3,6 @@
 # Check if duplicate fasta headers are present in a metadata file
 # Check if the all fasta headers are present in the metadata file
 
-from operator import index
 import sys
 import pandas as pd
 
