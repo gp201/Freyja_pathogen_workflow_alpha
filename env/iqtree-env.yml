@@ -3,4 +3,10 @@ channels:
   - conda-forge
   - bioconda
 dependencies:
-  - iqtree
+  - _libgcc_mutex=0.1=conda_forge
+  - _openmp_mutex=4.5=2_gnu
+  - iqtree=2.2.0.3=hb97b32f_1
+  - libgcc-ng=12.2.0=h65d4601_18
+  - libgomp=12.2.0=h65d4601_18
+  - libstdcxx-ng=12.2.0=h46fd767_18
+  - libzlib=1.2.13=h166bdaf_4

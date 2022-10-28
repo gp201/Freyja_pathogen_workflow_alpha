@@ -146,7 +146,6 @@ process generate_protobuf_tree {
 
 process get_clades {
     label 'phyclip'
-    debug true
     input:
         // This has been added so nexflow will create a symlink to the tree in the same work dir.
         path rerooted_tree
