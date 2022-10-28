@@ -1,0 +1,13 @@
+name: freyja-pathogen-base
+channels:
+  - conda-forge
+  - bioconda
+dependencies:
+  - python=3.8
+  - pip
+  - pip:
+    - altair==4.2.0
+    - pandas==1.4.1
+    - biopython==1.79
+    - numpy==1.19.1
+    - matplotlib==3.5.1

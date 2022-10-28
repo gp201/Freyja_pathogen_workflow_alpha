@@ -36,14 +36,15 @@ def check_metadata_fasta_headers(metadata, fasta_file):
 def main():
     fasta_file = sys.argv[1]
     metadata_file = sys.argv[2]
+    strain_column = sys.argv[3]
     if metadata_file.endswith(".tsv"):
         metadata = pd.read_csv(metadata_file, header=0, sep='\t')
     elif metadata_file.endswith(".csv"):
-        metadata = pd.read_csv(metadata_file, header=0)
+        metadata = pd.read_csv(metadata_file, header=0, sep=',')
     # Drop rows with missing value in column 0.
     metadata = metadata.dropna(subset=[metadata.columns[0]])
-    # set index to column 0
-    metadata = metadata.set_index(metadata.columns[0])
+    # set index to column
+    metadata = metadata.set_index(strain_column)
     check_duplicate_fasta_headers(fasta_file)
     check_duplicate_metadata_headers(metadata)
     check_metadata_fasta_headers(metadata, fasta_file)

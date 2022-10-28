@@ -1,0 +1,6 @@
+name: freyja-pathogen-treetime
+channels:
+  - conda-forge
+  - bioconda
+dependencies:
+  - treetime
