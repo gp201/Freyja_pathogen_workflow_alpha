@@ -1,0 +1,9 @@
+name: freyja-pathogen-align
+channels:
+  - conda-forge
+  - bioconda
+dependencies:
+  - minimap2
+  - gofasta
+  - samtools
+  - mafft
