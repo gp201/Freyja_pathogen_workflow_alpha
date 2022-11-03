@@ -75,7 +75,6 @@ process clock_filter {
 }
 
 // Convert nexus to newick
-// Note: Not in use.
 process convert_nexus_to_newick {
     label 'phyclip'
     input:
@@ -93,6 +92,7 @@ process convert_nexus_to_newick {
         """
 }
 
+// Plot entropy for the sequences and save to pdf.
 process entropy {
     input:
         path aligned_fasta
@@ -109,6 +109,7 @@ process entropy {
         """
 }
 
+// Generate a vcf file from the aligned fasta file.
 process generate_vcf {
     label 'usher'
     input:
@@ -126,6 +127,7 @@ process generate_vcf {
         """
 }
 
+// Convert the tree and vcf file to a mutation annotated protobuf tree file.
 process generate_protobuf_tree {
     label 'usher'
     input:
@@ -144,6 +146,7 @@ process generate_protobuf_tree {
         """
 }
 
+// Run Phyclip on the protobuf tree file to generate clades.
 process get_clades {
     label 'phyclip'
     input:
