@@ -18,7 +18,6 @@ process align {
         path "aligned.fasta", emit: aligned_fasta_file
     script:
         """
-        // if "aligned" is present in any part of the file name. skip alignment.
         if [[ $fasta == *aligned* ]]
         then
             cp $fasta aligned.fasta
