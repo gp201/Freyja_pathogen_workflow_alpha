@@ -28,4 +28,4 @@ You can do the either of the following to modify the parameters of the pipeline:
     - Example: `bash run_nf.sh --fasta_file /path/to/fasta/file`
 
 ## Tips
-- If "*align*" is present in the fasta file name then the workflow will not align the fasta file.
+- If "*aligned*" is present in the fasta file name then the workflow will not align the fasta file.
