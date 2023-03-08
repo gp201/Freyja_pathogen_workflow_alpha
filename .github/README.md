@@ -9,6 +9,8 @@ This is a workflow for the Freyja Pathogen pipeline.
         - [Nextflow](https://www.nextflow.io/docs/latest/getstarted.html)
     - Install inside conda environment:
         - [PhyCLIP](https://github.com/alvinxhan/PhyCLIP)
+        > **Warning**
+            > The [PhyCLIP](https://github.com/alvinxhan/PhyCLIP) package requires Gurobi to be installed. You will require a license **(Cannot be used in a docker container)** to use Gurobi. If you do not have a license, you can use the free [Gurobi Academic License](https://www.gurobi.com/academia/academic-program-and-licenses/).
 2. Clone this repository.
     - `git clone https://github.com/gp201/Freyja_pathogen_workflow.git`
 3. Enter the cloned repository.
