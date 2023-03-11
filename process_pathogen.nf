@@ -17,14 +17,21 @@ process align {
     output:
         path "aligned.fasta", emit: aligned_fasta_file
     script:
-        """
-        if [[ $fasta == *aligned* ]]
-        then
-            cp $fasta aligned.fasta
+        if (params.align_mode == 'mafft')
+            """
+            if [[ $fasta == *aligned* ]]
+            then
+                cp $fasta aligned.fasta
+            else
+                mafft --auto --thread $params.threads --addfragments $fasta $ref_seq > aligned.fasta
+            fi
+            """
         else
-            mafft --auto --thread $params.threads --addfragments $fasta $ref_seq > aligned.fasta
-        fi
-        """
+            """
+            minimap2 -t $params.threads -a $ref_seq $fasta | gofasta sam toMultiAlign > aligned.fasta
+            cat $ref_seq aligned.fasta > aligned.fasta.tmp
+            mv aligned.fasta.tmp aligned.fasta
+            """
     stub:
         """
         touch aligned.fasta
