@@ -3,4 +3,4 @@ channels:
   - conda-forge
   - bioconda
 dependencies:
-  - iqtree
+  - iqtree=2.2.0.3

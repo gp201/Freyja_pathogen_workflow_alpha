@@ -3,7 +3,7 @@ channels:
   - conda-forge
   - bioconda
 dependencies:
-  - minimap2
-  - gofasta
-  - samtools
-  - mafft
+  - minimap2=2.24
+  - gofasta=1.1.0
+  - samtools=1.16.1
+  - mafft=7.508
